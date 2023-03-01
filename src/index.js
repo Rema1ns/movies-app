@@ -32,18 +32,18 @@ class App extends Component {
 
     return (
       <section>
-          <div className='movies'>
-            {movies.map((movie) => {
-              return <Movie
-                key={movie.id}
-                poster={movie.poster_path}
-                release={movie.release_date}
-                overview={movie.overview}
-                genres={movie.genre_ids}
-                title={movie.title}/>
-              }
-            )}
-          </div>
+        <div className='movies'>
+          {movies.map((movie) => {
+            return <Movie
+              key={movie.id}
+              poster={movie.poster_path}
+              release={movie.release_date}
+              overview={movie.overview}
+              genres={movie.genre_ids}
+              title={movie.title}/>
+            }
+          )}
+        </div>
       </section>
     )
   }

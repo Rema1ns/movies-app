@@ -2,7 +2,6 @@ import React from "react";
 import './item.css'
 import PropTypes from 'prop-types'
 import format from 'date-fns/format'
-import {enGB} from "date-fns/locale";
 
 
 function Movie({ title, overview, poster, release, genres}) {
