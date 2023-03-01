@@ -24,18 +24,10 @@ function Movie({ title, overview, poster, release, genres}) {
 
   //============================================= обрезание строки ====>
   function shortTxt (text) {
-    if (text.length > 150) {
-      const txt =  text.slice(0, 150)
-      let arrTxt = txt.split(' ')
-      let arrAnswer = []
-      for (let i = 0; i < arrTxt.length; i++) {
-        if (arrTxt[i] === arrTxt[arrTxt.length -1]){
-          arrAnswer.push('...')
-        } else {
-          arrAnswer.push(arrTxt[i] + ' ')
-        }
-      }
-        return arrAnswer
+    if (text.length > 200) {
+      let arrTxt = text.slice(0, 200).split(' ')
+      arrTxt.pop()
+      return [arrTxt.map((el) => el + ' '), '...']
       }
     return text
   }

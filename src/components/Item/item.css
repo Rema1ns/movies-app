@@ -41,13 +41,9 @@
 }
 
 .movie__overview {
-  /*display: -webkit-box;*/
   width: 228px;
-  height: 89px;
+  height: auto;
   overflow: hidden;
-  /*-webkit-line-clamp: 5;*/
-  /*-webkit-box-orient: vertical;*/
-  /*text-overflow: ellipsis;*/
   margin-top: 7px;
 }
 
