@@ -7,20 +7,9 @@ import {enGB} from "date-fns/locale";
 
 function Movie({ title, overview, poster, release, genres}) {
 
-
-  //============================================= формат даты ====>
-  function formatDateRelease (date) {
-    if (date === '') {
-      return 'в ебучей апи нету даты'
-    }
-    let newArray = []
-    let arr = date.split('-')
-    for (let i = 0; i < arr.length; i++) {
-      newArray.push(Math.floor(arr[i]))
-    }
-    return format(new Date([...newArray]), 'MMMM dd, yyyy', { locale: enGB })
-  }
-  const formatDate = formatDateRelease(release)
+  //============================================= формат даты ========>
+  const defaultRelease = 'в ебучей апи нету даты';
+  const formatDate = () => { return format(new Date(release), 'MMMM dd, yyyy') }
 
   //============================================= обрезание строки ====>
   function shortTxt (text) {
@@ -32,12 +21,13 @@ function Movie({ title, overview, poster, release, genres}) {
     return text
   }
   const summary = shortTxt(overview)
-
+  //================================================= ПОСТЕРЫ =========>
 
   let image = `https://image.tmdb.org/t/p/original${poster}`;
   if (poster === null) {
-    image = 'https://image.tmdb.org/t/p/original/dJ52jV7HlJ9hB8kdBOnj01DllBA.jpg'
+    image = 'https://image.tmdb.org/t/p/original/xWjw5JBMuce6Wv33dDUfmzVVaAL.jpg'
   }
+  //================================================= ретерн =========>
 
   return(
     <div className='movie'>
@@ -46,7 +36,7 @@ function Movie({ title, overview, poster, release, genres}) {
         src={image} alt={title}/>
       <div className='movie__column'>
         <h1 className='movie__title'>{title}</h1>
-        <h3 className='movie__release'>{formatDate}</h3>
+        <h3 className='movie__release'>{release === '' ? defaultRelease : formatDate()}</h3>
         <h5 className='movie__genres'>genres</h5>
         <p className='movie__overview'>{summary}</p>
       </div>
