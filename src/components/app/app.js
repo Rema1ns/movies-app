@@ -1,17 +1,19 @@
 import React, {Component} from 'react'
-import {Spin} from 'antd'
 import {Offline, Online} from 'react-detect-offline'
 
 import './app.css'
 import Movie from '../Item/movie'
 import getApiMovies from '../../api-services/api-services'
-import ErrorIndicator from '../error/error'
+import ErrorIndicator from '../error-indicator/error-indicator'
+import ErrorNetwork from '../error-network/error-network'
+import Spinner from '../../components/spinner/spinner'
 
 export default class App extends Component {
   constructor() {
     super()
     this.updateMovie()
   }
+  //============================================================  СОСТОЯНИЯ  =====>
 
   state = {
     movies: [],
@@ -19,7 +21,7 @@ export default class App extends Component {
     error: false,
   }
 
-  getApiMovies = new getApiMovies()
+  //==============================================================  ОШИБКА  =====>
 
   onError = () => {
     this.setState({
@@ -27,6 +29,9 @@ export default class App extends Component {
       loading: false,
     })
   }
+  //=======================================================  загрузка данных  =====>
+
+  getApiMovies = new getApiMovies()
 
   updateMovie() {
     this.getApiMovies
@@ -48,7 +53,7 @@ export default class App extends Component {
     const errorMessage = error ? <ErrorIndicator /> : null
 
     if (loading) {
-      return <Spin className="example" />
+      return <Spinner />
     }
 
     return (
@@ -71,7 +76,7 @@ export default class App extends Component {
           </div>
         </Online>
         <Offline>
-          <ErrorIndicator />
+          <ErrorNetwork />
         </Offline>
       </section>
     )
