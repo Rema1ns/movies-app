@@ -1,24 +1,20 @@
 import React, {Component} from 'react'
-import {Offline, Online} from 'react-detect-offline'
 
 import './app.css'
 import Movie from '../Item/movie'
-import getApiMovies from '../../api-services/api-services'
+import GetApiMovies from '../../api-services/api-services'
 import ErrorIndicator from '../error-indicator/error-indicator'
-import ErrorNetwork from '../error-network/error-network'
 import Spinner from '../../components/spinner/spinner'
+import SearchForm from '../search-form/search-form'
 
 export default class App extends Component {
-  constructor() {
-    super()
-    this.updateMovie()
-  }
   //============================================================  СОСТОЯНИЯ  =====>
 
   state = {
     movies: [],
     loading: true,
     error: false,
+    search: '',
   }
 
   //==============================================================  ОШИБКА  =====>
@@ -31,11 +27,9 @@ export default class App extends Component {
   }
   //=======================================================  загрузка данных  =====>
 
-  getApiMovies = new getApiMovies()
-
-  updateMovie() {
-    this.getApiMovies
-      .getMovies()
+  updateMovie(e) {
+    GetApiMovies(e)
+      .then((res) => res.results)
       .then((results) => {
         this.setState({
           movies: results,
@@ -43,6 +37,21 @@ export default class App extends Component {
         })
       })
       .catch(this.onError)
+  }
+  //=======================================================  поиск фильмов  =====>
+
+  componentDidMount() {
+    this.updateMovie()
+  }
+
+  searchMovie = (e) => {
+    this.setState({search: e})
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.search !== this.state.search) {
+      this.updateMovie(this.state.search)
+    }
   }
 
   //==============================================================  RENDER  =====>
@@ -58,26 +67,22 @@ export default class App extends Component {
 
     return (
       <section>
-        <Online>
-          {errorMessage}
-          <div className="movies">
-            {movies.map((movie) => {
-              return (
-                <Movie
-                  key={movie.id}
-                  poster={movie.poster_path}
-                  release={movie.release_date}
-                  overview={movie.overview}
-                  genres={movie.genre_ids}
-                  title={movie.title}
-                />
-              )
-            })}
-          </div>
-        </Online>
-        <Offline>
-          <ErrorNetwork />
-        </Offline>
+        <SearchForm searchMovie={this.searchMovie} />
+        {errorMessage}
+        <div className="movies">
+          {movies.map((movie) => {
+            return (
+              <Movie
+                key={movie.id}
+                poster={movie.poster_path}
+                release={movie.release_date}
+                overview={movie.overview}
+                genres={movie.genre_ids}
+                title={movie.title}
+              />
+            )
+          })}
+        </div>
       </section>
     )
   }

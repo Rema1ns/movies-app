@@ -1,3 +1,7 @@
 body {
   background-color: azure;
 }
+
+:focus {
+  outline: none;
+}
