@@ -25,6 +25,7 @@ export default class SearchForm extends Component {
         <input
           value={this.state.label}
           type="text"
+          autoFocus={true}
           onChange={this.onChange}
           className="search-form"
           placeholder="Type to search..."

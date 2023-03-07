@@ -6,6 +6,8 @@ import GetApiMovies from '../../api-services/api-services'
 import ErrorIndicator from '../error-indicator/error-indicator'
 import Spinner from '../../components/spinner/spinner'
 import SearchForm from '../search-form/search-form'
+import SearchNotResult from '../search-not-result/search-not-result'
+import Paginati0n from '../pagination/pagination'
 
 export default class App extends Component {
   //============================================================  СОСТОЯНИЯ  =====>
@@ -15,6 +17,7 @@ export default class App extends Component {
     loading: true,
     error: false,
     search: '',
+    page: '1',
   }
 
   //==============================================================  ОШИБКА  =====>
@@ -25,6 +28,7 @@ export default class App extends Component {
       loading: false,
     })
   }
+
   //=======================================================  загрузка данных  =====>
 
   updateMovie(e) {
@@ -34,10 +38,19 @@ export default class App extends Component {
         this.setState({
           movies: results,
           loading: false,
+          error: false,
         })
       })
       .catch(this.onError)
   }
+  //===========================================================  страница  =====>
+
+  pageNumber = (e) => {
+    this.setState({
+      page: e,
+    })
+  }
+
   //=======================================================  поиск фильмов  =====>
 
   componentDidMount() {
@@ -45,11 +58,16 @@ export default class App extends Component {
   }
 
   searchMovie = (e) => {
-    this.setState({search: e})
+    this.setState({
+      search: e,
+      loading: true,
+    })
   }
 
+  //=======================================================  обновление фильмов  =====>
+
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.search !== this.state.search) {
+    if (prevState.search !== this.state.search || prevState.page !== this.state.page) {
       this.updateMovie(this.state.search)
     }
   }
@@ -64,23 +82,31 @@ export default class App extends Component {
       return <Spinner />
     }
 
+    const startIndex = 6 * (this.state.page - 1)
+
+    const searchNotResult = movies.length === 0 && this.state.search.length !== 0 ? <SearchNotResult /> : null
+
     return (
       <section>
         <SearchForm searchMovie={this.searchMovie} />
         {errorMessage}
+        {searchNotResult}
         <div className="movies">
-          {movies.map((movie) => {
-            return (
-              <Movie
-                key={movie.id}
-                poster={movie.poster_path}
-                release={movie.release_date}
-                overview={movie.overview}
-                genres={movie.genre_ids}
-                title={movie.title}
-              />
-            )
-          })}
+          {movies
+            .map((movie) => {
+              return (
+                <Movie
+                  key={movie.id}
+                  poster={movie.poster_path}
+                  release={movie.release_date}
+                  overview={movie.overview}
+                  genres={movie.genre_ids}
+                  title={movie.title}
+                />
+              )
+            })
+            .slice(startIndex, 6 + startIndex)}
+          <Paginati0n pageNumber={this.pageNumber} />
         </div>
       </section>
     )
