@@ -85,12 +85,12 @@ export default class App extends Component {
     const startIndex = 6 * (this.state.page - 1)
 
     const searchNotResult = movies.length === 0 && this.state.search.length !== 0 ? <SearchNotResult /> : null
+    const showPagination = movies.length !== 0 ? <Paginati0n pageNumber={this.pageNumber} /> : null
 
     return (
       <section>
         <SearchForm searchMovie={this.searchMovie} />
         {errorMessage}
-        {searchNotResult}
         <div className="movies">
           {movies
             .map((movie) => {
@@ -106,7 +106,13 @@ export default class App extends Component {
               )
             })
             .slice(startIndex, 6 + startIndex)}
-          <Paginati0n pageNumber={this.pageNumber} />
+        </div>
+        <div style={{
+          width: "280px",
+          margin: "0px auto"
+        }}>
+          {searchNotResult}
+          {showPagination}
         </div>
       </section>
     )
