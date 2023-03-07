@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import './search-form.css'
+import debounce from 'lodash.debounce'
 
 export default class SearchForm extends Component {
   state = {
@@ -15,12 +16,12 @@ export default class SearchForm extends Component {
   onSubmit = (e) => {
     e.preventDefault()
     this.props.searchMovie(this.state.label)
-    this.setState({label: ''})
   }
 
+  lol = debounce(this.onSubmit, 800)
   render() {
     return (
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={(e) => e.preventDefault()} onChange={this.lol}>
         <input
           value={this.state.label}
           type="text"

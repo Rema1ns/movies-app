@@ -57,7 +57,6 @@ export default class App extends Component {
   //==============================================================  RENDER  =====>
   render() {
     const {movies, loading, error} = this.state
-    console.log(movies)
 
     const errorMessage = error ? <ErrorIndicator /> : null
 
