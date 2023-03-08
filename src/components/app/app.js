@@ -107,10 +107,12 @@ export default class App extends Component {
             })
             .slice(startIndex, 6 + startIndex)}
         </div>
-        <div style={{
-          width: "280px",
-          margin: "0px auto"
-        }}>
+        <div
+          style={{
+            width: '280px',
+            margin: '0px auto',
+          }}
+        >
           {searchNotResult}
           {showPagination}
         </div>
